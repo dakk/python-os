@@ -1,1 +1,0 @@
-shedskin build kernel/main --nogc

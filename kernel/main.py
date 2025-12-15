@@ -1,4 +1,3 @@
-from typing import Tuple
+from constants import version
 
-v: Tuple[str, str] = ("python-os", '0.1')
-print('Hello', v)
+print('Hello', version)
