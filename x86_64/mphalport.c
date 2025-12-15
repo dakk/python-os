@@ -1,17 +1,6 @@
 #include <unistd.h>
-#include "py/mpconfig.h"
+#include "mphalport.h"
 
-/*
- * Core UART functions to implement for a port
- */
-
-#if MICROPY_MIN_USE_STM32_MCU
-typedef struct {
-    volatile uint32_t SR;
-    volatile uint32_t DR;
-} periph_uart_t;
-#define USART1 ((periph_uart_t *)0x40011000)
-#endif
 
 // Receive single character
 int mp_hal_stdin_rx_chr(void) {
