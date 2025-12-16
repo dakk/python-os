@@ -10,3 +10,6 @@ all: $(OBJ)
 $(BUILD)/%.mpy: %.py
 	echo "MPY $<"
 	$(MPY_CROSS) -o $@ $<
+
+clean:
+	rm gen/*.mpy

@@ -2,6 +2,8 @@
 # git clone https://github.com/micropython/micropython
 
 build-micropython:
+	cd kernel && make 
+
 	cp -r x86_64 micropython/ports/
 	cd micropython/ports/x86_64 && make
 
@@ -14,8 +16,8 @@ build-micropython:
 
 clean:
 	cd micropython/ports/x86_64 && make clean
+	cd kernel && make clean
 
-# 	objdump -D ./micropython/ports/x86_64/build/firmware.elf > firmware.dis
 
 make-mpy-cross:
 	cd ./micropython/mpy-cross && make

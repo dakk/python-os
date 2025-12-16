@@ -32,12 +32,12 @@ static char *stack_top;
 static char heap[MICROPY_HEAP_SIZE];
 #endif
 
-#include "mphalport.h"
+#include "video.h"
 
 void kernel_main(void *mbi) {
     (void)mbi;
 
-    mp_hal_stdout_clear();
+    video_clear();
 
     #if MICROPY_ENABLE_GC
     gc_init(heap, heap + sizeof(heap));

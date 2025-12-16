@@ -1,10 +1,21 @@
+// Copyright (C) 2025  Davide Gessa
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include <unistd.h>
 #include "mphalport.h"
-
-#define DEFAULT_ATTR 0x07
-
-volatile unsigned char *video = (volatile unsigned char*)0xB8000;
-
+#include "video.h"
 
 int mp_hal_stdin_rx_chr(void) {
     // TODO: actually read from keyboard; for now just block forever
@@ -13,24 +24,7 @@ int mp_hal_stdin_rx_chr(void) {
 
 
 mp_uint_t mp_hal_stdout_tx_strn(const char *str, mp_uint_t len) {
-    while (len--) {
-        if (*str == '\n' || *str == '\r') {
-            *str++;
-            continue;
-        }
-        *video++ = *str++;
-        *video++ = DEFAULT_ATTR;
+    while(len--) {
+        video_putchar(*str++);
     }
-    return len;
-}
-
-
-void mp_hal_stdout_clear() {
-    int i;
-    video = (volatile unsigned char*) 0xB8000;
-    for (i = 0; i < 80 * 25; i++) {
-        *video++ = ' ';
-        *video++ = DEFAULT_ATTR;
-    }
-    video = (volatile unsigned char*)0xB8000;
 }
