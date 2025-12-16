@@ -1,3 +1,4 @@
-micropython
+./micropython
 isofiles
 python-os.iso
+kernel/gen

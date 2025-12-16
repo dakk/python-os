@@ -38,28 +38,27 @@ void kernel_main(void *mbi) {
     (void)mbi;
 
     mp_hal_stdout_clear();
-    // mp_hal_stdout_tx_strn("Loading...", 10);
 
     #if MICROPY_ENABLE_GC
     gc_init(heap, heap + sizeof(heap));
     #endif
     mp_init();
     #if MICROPY_ENABLE_COMPILER
-    #if MICROPY_REPL_EVENT_DRIVEN
-    pyexec_event_repl_init();
-    for (;;) {
-        int c = mp_hal_stdin_rx_chr();
-        if (pyexec_event_repl_process_char(c)) {
-            break;
-        }
-    }
+        #if MICROPY_REPL_EVENT_DRIVEN
+            pyexec_event_repl_init();
+            for (;;) {
+                int c = mp_hal_stdin_rx_chr();
+                if (pyexec_event_repl_process_char(c)) {
+                    break;
+                }
+            }
+        #else
+            pyexec_friendly_repl();
+        #endif
+        // do_str("print('hello world!', list(x+1 for x in range(10)), end='eol\\n')", MP_PARSE_SINGLE_INPUT);
+        // do_str("for i in range(10):\r\n  print(i)", MP_PARSE_FILE_INPUT);
     #else
-    pyexec_friendly_repl();
-    #endif
-    // do_str("print('hello world!', list(x+1 for x in range(10)), end='eol\\n')", MP_PARSE_SINGLE_INPUT);
-    // do_str("for i in range(10):\r\n  print(i)", MP_PARSE_FILE_INPUT);
-    #else
-    pyexec_frozen_module("frozentest.py", false);
+        pyexec_frozen_module("kernel.py", false);
     #endif
     mp_deinit();
 }

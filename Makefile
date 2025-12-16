@@ -16,3 +16,6 @@ clean:
 	cd micropython/ports/x86_64 && make clean
 
 # 	objdump -D ./micropython/ports/x86_64/build/firmware.elf > firmware.dis
+
+make-mpy-cross:
+	cd ./micropython/mpy-cross && make
