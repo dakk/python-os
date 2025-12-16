@@ -21,7 +21,7 @@ LDFLAGS +=  -m elf_i386 -nostdlib -T x86_64.ld # -Map=$@.map --cref --gc-section
 ASFLAGS  += -m32
 # Tune for Debugging or Optimization
 # CFLAGS += -g 
-# CFLAGS += -O0 -DNDEBUG
+CFLAGS += -O0 -DNDEBUG
 #CFLAGS += -fdata-sections -ffunction-sections
 
 # Flags for optional C++ source code
@@ -34,16 +34,16 @@ SRC_S = boot.S
 SRC_C = \
 	main.c \
 	mphalport.c \
-# 	shared/libc/printf.c \
-# 	shared/readline/readline.c \
-# 	shared/runtime/pyexec.c \
-# 	shared/runtime/stdout_helpers.c \
-# 	$(BUILD)/_frozen_mpy.c \
-# 	shared/libc/string0.c
+	shared/libc/printf.c \
+	shared/readline/readline.c \
+	shared/runtime/pyexec.c \
+	shared/runtime/stdout_helpers.c \
+ 	$(BUILD)/_frozen_mpy.c \
+	shared/libc/string0.c
 
-# SRC_QSTR += shared/readline/readline.c shared/runtime/pyexec.c
+SRC_QSTR += shared/readline/readline.c shared/runtime/pyexec.c
 
-# OBJ += $(PY_CORE_O)
+OBJ += $(PY_CORE_O)
 OBJ += $(addprefix $(BUILD)/, $(SRC_C:.c=.o))
 OBJ += $(addprefix $(BUILD)/, $(SRC_CXX:.cpp=.o))
 OBJ += $(addprefix $(BUILD)/, $(SRC_S:.S=.o))
@@ -58,17 +58,13 @@ $(BUILD)/%.S: %.c
 	$(ECHO) "CC->ASM $<"
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
 
-# $(BUILD)/_frozen_mpy.c: $(TOP)/tests/frozen/frozentest.mpy $(BUILD)/genhdr/qstrdefs.generated.h
-# 	$(ECHO) "MISC freezing bytecode"
-# 	$(Q)$(TOP)/tools/mpy-tool.py -f -q $(BUILD)/genhdr/qstrdefs.preprocessed.h -mlongint-impl=none $< > $@
-
-# $(BUILD)/kernel.bin: $(BUILD)/firmware.elf
-# 	$(Q)$(OBJCOPY) -O binary $< $@
+$(BUILD)/_frozen_mpy.c: $(TOP)/tests/frozen/frozentest.mpy $(BUILD)/genhdr/qstrdefs.generated.h
+	$(ECHO) "MISC freezing bytecode"
+	$(Q)$(TOP)/tools/mpy-tool.py -f -q $(BUILD)/genhdr/qstrdefs.preprocessed.h -mlongint-impl=none $< > $@
 	
 $(BUILD)/firmware.elf: $(OBJ)
 	$(ECHO) "LINK $@"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(Q)$(SIZE) $@
-
 
 include $(TOP)/py/mkrules.mk
