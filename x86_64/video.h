@@ -38,9 +38,9 @@
 #define VIDEO_MAX_X		80
 #define VIDEO_MAX_Y		25
 
-typedef unsigned char uint8_t;
-typedef uint8_t vcolor_t;
+#include "types.h"
 
+typedef uint8_t vcolor_t;
 
 void video_backspace();
 void video_move_cursor(uint8_t, uint8_t);

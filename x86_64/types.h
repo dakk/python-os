@@ -1,4 +1,4 @@
-// Copyright (C) 2025  Davide Gessa
+// Copyright (C) 2009-2025  Davide Gessa
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,19 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <unistd.h>
-#include "mphalport.h"
-#include "video.h"
+#ifndef TYPES_H
+#define TYPES_H
 
-int mp_hal_stdin_rx_chr(void) {
-    // TODO: actually read from keyboard; for now just block forever
-    for (;;) { __asm__ __volatile__("hlt"); }
-}
+#define true	1
+#define false	0
+#define NULL	0
 
+typedef signed char          int8_t;
+typedef unsigned char        uint8_t;
+typedef short                int16_t;
+typedef unsigned short       uint16_t;
+typedef int                  int32_t;
+typedef unsigned             uint32_t;
+typedef long long            int64_t;
+typedef unsigned long long   uint64_t;
+typedef unsigned 	     	 size_t;
 
-mp_uint_t mp_hal_stdout_tx_strn(const char *str, mp_uint_t len) {
-    while(len--) {
-        video_putchar(*str++);
-    }
-    return len;
-}
+#endif
