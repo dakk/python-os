@@ -28,4 +28,5 @@ void mp_hal_stdout_clear() {
         video[0] = ((unsigned short)DEFAULT_ATTR << 8) | ' ';
         video++;
     }
+    video = (volatile unsigned short*)0xB8000;
 }

@@ -13,10 +13,12 @@ INC += -I.
 INC += -I$(TOP)
 INC += -I$(BUILD)
 
-#  -mcmodel=large 
-CFLAGS += $(INC) -Wall -Werror -std=c99 -nostdlib -ffreestanding -mno-red-zone -mno-mmx -mno-sse -mno-sse2  $(COPT)
-LDFLAGS += -nostdlib -T x86_64.ld # -Map=$@.map --cref --gc-sections
-
+#  -mcmodel=large  
+# Werror
+# -mno-red-zone -mno-mmx -mno-sse -mno-sse2
+CFLAGS += $(INC) -m32 -Wall -std=c99 -nostdlib -ffreestanding  $(COPT)
+LDFLAGS +=  -m elf_i386 -nostdlib -T x86_64.ld # -Map=$@.map --cref --gc-sections
+ASFLAGS  += -m32
 # Tune for Debugging or Optimization
 # CFLAGS += -g 
 # CFLAGS += -O0 -DNDEBUG
@@ -31,7 +33,7 @@ SRC_S = boot.S
 
 SRC_C = \
 	main.c \
-# 	mphalport.c \
+	mphalport.c \
 # 	shared/libc/printf.c \
 # 	shared/readline/readline.c \
 # 	shared/runtime/pyexec.c \
@@ -50,6 +52,10 @@ all: $(BUILD)/firmware.elf
 
 $(BUILD)/%.o: %.S
 	$(ECHO) "AS $<"
+	$(Q)$(CC) $(ASFLAGS) -c -o $@ $<
+
+$(BUILD)/%.S: %.c
+	$(ECHO) "CC->ASM $<"
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
 
 # $(BUILD)/_frozen_mpy.c: $(TOP)/tests/frozen/frozentest.mpy $(BUILD)/genhdr/qstrdefs.generated.h

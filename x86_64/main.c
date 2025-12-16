@@ -1,14 +1,14 @@
-// #include <stdint.h>
-// #include <stdio.h>
-// #include <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-// #include "py/builtin.h"
-// #include "py/compile.h"
-// #include "py/runtime.h"
-// #include "py/repl.h"
-// #include "py/gc.h"
-// #include "py/mperrno.h"
-// #include "shared/runtime/pyexec.h"
+#include "py/builtin.h"
+#include "py/compile.h"
+#include "py/runtime.h"
+#include "py/repl.h"
+#include "py/gc.h"
+#include "py/mperrno.h"
+#include "shared/runtime/pyexec.h"
 
 // #if MICROPY_ENABLE_COMPILER
 // void do_str(const char *src, mp_parse_input_kind_t input_kind) {
@@ -32,33 +32,17 @@
 // // static char heap[MICROPY_HEAP_SIZE];
 // #endif
 
-// #define DEFAULT_ATTR 0x07
-// volatile unsigned short *video = (volatile unsigned short*)0xB8000;
-
-// void wr(const char *str, unsigned int len) {
-//     while (len--) {
-//         unsigned char c = *str++;
-//         video[0] = ((unsigned short)DEFAULT_ATTR << 8) | c;
-//         video++;
-//     }
-// }
-
+#include "mphalport.h"
 
 void kernel_main(void *mbi) {
     (void)mbi;
-    video = (volatile unsigned short*)0xB8000;
-    video[0] = ((unsigned short)DEFAULT_ATTR << 8) | 'c';
-    video[1] = ((unsigned short)DEFAULT_ATTR << 8) | 'i';
-    video[2] = ((unsigned short)DEFAULT_ATTR << 8) | 'a';
-    video[3] = ((unsigned short)DEFAULT_ATTR << 8) | 'o';
 
-    *((int*)0xb8000)=0x07690748;
-    for (;;) { __asm__ __volatile__("hlt"); }
+    mp_hal_stdout_clear();
+    mp_hal_stdout_tx_strn("Loading...", 10);
 
-
-    // #if MICROPY_ENABLE_GC
-    // //gc_init(heap, heap + sizeof(heap));
-    // #endif
+    #if MICROPY_ENABLE_GC
+    //gc_init(heap, heap + sizeof(heap));
+    #endif
     // mp_init();
     // #if MICROPY_ENABLE_COMPILER
     // #if MICROPY_REPL_EVENT_DRIVEN
