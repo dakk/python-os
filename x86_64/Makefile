@@ -35,7 +35,6 @@ SRC_S = boot.S
 SRC_C = \
 	main.c \
 	video.c \
-	io.c \
 	mphalport.c \
 	shared/libc/printf.c \
 	shared/readline/readline.c \

@@ -7,8 +7,7 @@ build-micropython:
 	rm -r micropython/ports/x86_64
 	cp -r x86_64 micropython/ports/
 	make -C micropython/mpy-cross
-	make -C micropython/ports/x86_64 submodules
-	make -C micropython/ports/x86_64 FROZEN_MANIFEST=../../../kernel/manifest.py
+	make -C micropython/ports/x86_64 submodules all FROZEN_MANIFEST=../../../kernel/manifest.py USER_C_MODULES=../../../modules/
 
 	mkdir -p isofiles/boot/grub
 	cp ./micropython/ports/x86_64/build/firmware.elf isofiles/boot/kernel.elf
