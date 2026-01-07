@@ -9,6 +9,7 @@ QSTR_DEFS = qstrdefsport.h
 # include py core make definitions
 include $(TOP)/py/py.mk
 
+
 INC += -I.
 INC += -I$(TOP)
 INC += -I$(BUILD)
@@ -40,12 +41,11 @@ SRC_C = \
 	shared/readline/readline.c \
 	shared/runtime/pyexec.c \
 	shared/runtime/stdout_helpers.c \
- 	$(BUILD)/_frozen_mpy.c \
 	shared/libc/string0.c
 
 SRC_QSTR += shared/readline/readline.c shared/runtime/pyexec.c
 
-OBJ += $(PY_CORE_O)
+OBJ += $(PY_O)
 OBJ += $(addprefix $(BUILD)/, $(SRC_C:.c=.o))
 OBJ += $(addprefix $(BUILD)/, $(SRC_CXX:.cpp=.o))
 OBJ += $(addprefix $(BUILD)/, $(SRC_S:.S=.o))
@@ -59,14 +59,11 @@ $(BUILD)/%.o: %.S
 $(BUILD)/%.S: %.c
 	$(ECHO) "CC->ASM $<"
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
-
-$(BUILD)/_frozen_mpy.c: $(TOP)/../kernel/gen/kernel.mpy $(BUILD)/genhdr/qstrdefs.generated.h
-	$(ECHO) "MISC freezing bytecode"
-	$(Q)$(TOP)/tools/mpy-tool.py -f -q $(BUILD)/genhdr/qstrdefs.preprocessed.h -mlongint-impl=none $< > $@
 	
 $(BUILD)/firmware.elf: $(OBJ)
 	$(ECHO) "LINK $@"
 	$(Q)$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(Q)$(SIZE) $@
+
 
 include $(TOP)/py/mkrules.mk

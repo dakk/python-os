@@ -43,7 +43,7 @@ void kernel_main(void *mbi) {
     gc_init(heap, heap + sizeof(heap));
     #endif
     mp_init();
-    #if MICROPY_ENABLE_COMPILER
+    #if MICROPY_ENABLE_COMPILER && MICROPY_RUN_REPL
         #if MICROPY_REPL_EVENT_DRIVEN
             pyexec_event_repl_init();
             for (;;) {

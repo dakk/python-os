@@ -13,10 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import constants
+
 oname: str = 'python-os'
 print(oname)
 
 i = 0
 while True:
-    print(oname, i)
+    print(oname, constants.VERSION, i)
     i += 1

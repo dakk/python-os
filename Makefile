@@ -1,11 +1,14 @@
 
 # git clone https://github.com/micropython/micropython
+#make submodules && make -C ../../mpy-cross &&
 
 build-micropython:
-	cd kernel && make 
-
+#  	cd kernel && make
+	rm -r micropython/ports/x86_64
 	cp -r x86_64 micropython/ports/
-	cd micropython/ports/x86_64 && make
+	make -C micropython/mpy-cross
+	make -C micropython/ports/x86_64 submodules
+	make -C micropython/ports/x86_64 FROZEN_MANIFEST=../../../kernel/manifest.py
 
 	mkdir -p isofiles/boot/grub
 	cp ./micropython/ports/x86_64/build/firmware.elf isofiles/boot/kernel.elf
@@ -16,7 +19,7 @@ build-micropython:
 
 clean:
 	cd micropython/ports/x86_64 && make clean
-	cd kernel && make clean
+	#cd kernel && make clean
 
 
 make-mpy-cross:
