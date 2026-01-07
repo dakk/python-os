@@ -1,7 +1,3 @@
-
-# git clone https://github.com/micropython/micropython
-#make submodules && make -C ../../mpy-cross &&
-
 .PHONY: all build make-iso run-qemu clean
 
 all: build make-iso run-qemu
