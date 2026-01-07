@@ -3,12 +3,11 @@
 all: build make-iso run-qemu
 	@echo "Default run complete"
 
-
 build:
 	rm -r micropython/ports/x86_64
 	cp -r x86_64 micropython/ports/
 	make -C micropython/mpy-cross
-	make -C micropython/ports/x86_64 submodules all FROZEN_MANIFEST=../../../kernel/manifest.py USER_C_MODULES=../../../modules/
+	make -C micropython/ports/x86_64 -j12 submodules all FROZEN_MANIFEST=../../../kernel/manifest.py USER_C_MODULES=../../../modules/
 
 make-iso:
 	mkdir -p isofiles/boot/grub
@@ -21,12 +20,11 @@ run-qemu:
 	qemu-system-x86_64 -cdrom python-os.iso	-monitor unix:/tmp/qemu-mon.sock,server,nowait &
 	sleep 1
 	echo "screendump screenshot.ppm" | socat - UNIX-CONNECT:/tmp/qemu-mon.sock
-	convert screenshot.ppm screenshot.png
+	magick screenshot.ppm screenshot.png
 	rm screenshot.ppm  /tmp/qemu-mon.sock
 
 clean:
 	cd micropython/ports/x86_64 && make clean
-
 
 make-mpy-cross:
 	cd ./micropython/mpy-cross && make

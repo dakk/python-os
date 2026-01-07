@@ -1,4 +1,4 @@
-# Copyright (C) 2025  Davide Gessa
+# Copyright (C) 2025-2026  Davide Gessa
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,9 +16,13 @@
 import cmos
 import constants
 
+
 oname: str = 'python-os'
 print(oname, constants.VERSION, cmos.rtc())
 
+
+# import vga
+# vga.set_vga_mode13h()
 
 # i = 0
 # while True:

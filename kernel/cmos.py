@@ -19,7 +19,7 @@ CMOS_ADDR = 0x70
 CMOS_DATA = 0x71
 
 def cmos_read(reg):
-    io.outb(reg, CMOS_ADDR)
+    io.outb(CMOS_ADDR, reg)
     return io.inb(CMOS_DATA)
 
 # BCD to decimal

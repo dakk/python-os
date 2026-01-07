@@ -23,7 +23,7 @@ static mp_obj_t io_inb(mp_obj_t port_obj) {
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(io_inb_obj, io_inb);
 
-static mp_obj_t io_outb(mp_obj_t data_obj, mp_obj_t port_obj) {
+static mp_obj_t io_outb(mp_obj_t port_obj, mp_obj_t data_obj) {
     uint8_t data = mp_obj_get_int(data_obj);
     uint16_t port = mp_obj_get_int(port_obj);
     __asm__ __volatile__("outb %1, %0" : : "dN" (port), "a" (data));
@@ -39,7 +39,7 @@ static mp_obj_t io_inw(mp_obj_t port_obj) {
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(io_inw_obj, io_inw);
 
-static mp_obj_t io_outw(mp_obj_t data_obj, mp_obj_t port_obj) {
+static mp_obj_t io_outw(mp_obj_t port_obj, mp_obj_t data_obj) {
     uint16_t data = mp_obj_get_int(data_obj);
     uint16_t port = mp_obj_get_int(port_obj);
     __asm__ __volatile__("outw %1, %0" : : "dN" (port), "a" (data));
@@ -55,7 +55,7 @@ static mp_obj_t io_inl(mp_obj_t port_obj) {
 }
 static MP_DEFINE_CONST_FUN_OBJ_1(io_inl_obj, io_inl);
 
-static mp_obj_t io_outl(mp_obj_t data_obj, mp_obj_t port_obj) {
+static mp_obj_t io_outl(mp_obj_t port_obj, mp_obj_t data_obj) {
     uint32_t data = mp_obj_get_int(data_obj);
     uint16_t port = mp_obj_get_int(port_obj);
     __asm__ __volatile__("outl %1, %0" : : "dN" (port), "a" (data));
