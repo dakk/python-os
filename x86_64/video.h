@@ -43,7 +43,7 @@
 typedef uint8_t vcolor_t;
 
 void video_backspace();
-void video_move_cursor(uint8_t, uint8_t);
+void video_move_cursor(uint16_t, uint16_t);
 void video_set_color(vcolor_t);
 void video_putchar(uint8_t);
 void video_puts(uint8_t *);

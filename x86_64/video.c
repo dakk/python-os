@@ -125,25 +125,28 @@ void video_gotoxy(uint8_t x, uint8_t y) {
 }
 
 
-void video_move_cursor(uint8_t x, uint8_t y) {
+void video_move_cursor(uint16_t col, uint16_t row) { 
+    uint16_t pos = row * 80 + col; 
+    
     __asm__ __volatile__ (
-        "movw $0x3D4, %%dx    \n"
-        "movb $0x0F, %%al     \n"
-        "out  %%al, %%dx      \n"
+        "movw $0x3D4, %%dx    \n" 
+        "movb $0x0F, %%al     \n"  
+        "out %%al, %%dx       \n"
         "movw $0x3D5, %%dx    \n"
-        "movb %0, %%al        \n"
-        "out  %%al, %%dx      \n"
+        "movb %b0, %%al       \n" 
+        "out %%al, %%dx       \n"
         "movw $0x3D4, %%dx    \n"
-        "movb $0x0E, %%al     \n"
-        "out  %%al, %%dx      \n"
+        "movb $0x0E, %%al     \n" 
+        "out %%al, %%dx       \n"
         "movw $0x3D5, %%dx    \n"
-        "movb %1, %%al        \n"
-        "out  %%al, %%dx      \n"
-        :
-        : "r"(x), "r"(y)
-        : "ax", "dx"
+        "movb %h0, %%al       \n"
+        "out %%al, %%dx       \n"
+        :                       
+        : "r"(pos)            
+        : "ax", "dx", "cc"      
     );
 }
+
 
 
 void video_clear() {
